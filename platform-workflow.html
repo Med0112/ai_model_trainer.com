@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AI Model Trainer | منصة تدريب نماذج الذكاء الاصطناعي متعددة الأجهزة</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Swiper for Gallery -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0c15;
+            color: #eef2ff;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            border-radius: 10px;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, #1e1b4b, #0a0c15);
+            z-index: 0;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%);
+            animation: rotateBg 30s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 60px 20px;
+        }
+
+        .hero-icon {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(129,140,248,0.5));
+        }
+
+        .hero-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(129,140,248,0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 28px;
+            border-radius: 100px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(129,140,248,0.3);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .hero-badge i {
+            font-size: 24px;
+            color: #f59e0b;
+        }
+
+        .pipeline {
+            padding: 80px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .pipeline-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 60px;
+        }
+
+        .pipeline-title span {
+            background: linear-gradient(135deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .flow-node {
+            background: rgba(30, 27, 75, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 28px;
+            padding: 32px 28px;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .flow-node:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #818cf8;
+            box-shadow: 0 30px 50px -20px rgba(129, 140, 248, 0.5);
+        }
+
+        .flow-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .flow-node:hover .flow-icon {
+            transform: scale(1.1);
+        }
+
+        .flow-node h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .flow-node p {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            font-size: 36px;
+            color: #818cf8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(5px); }
+        }
+
+        @media (max-width: 900px) {
+            .arrow { display: none; }
+            .flow { flex-direction: column; align-items: stretch; }
+            .hero h1 { font-size: 40px; }
+            .hero p { font-size: 18px; }
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin: 60px 0;
+        }
+
+        .col-card {
+            background: linear-gradient(145deg, #11131f, #0c0e18);
+            border-radius: 32px;
+            padding: 36px;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .col-card:hover {
+            border-color: #818cf8;
+            transform: translateY(-8px);
+            box-shadow: 0 25px 40px -20px rgba(129,140,248,0.4);
+        }
+
+        .col-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4f46e5, #c084fc);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 28px;
+            transition: transform 0.3s;
+        }
+
+        .col-card:hover .col-icon {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .col-card h3 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .col-card .role {
+            color: #818cf8;
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: inline-block;
+            border-bottom: 2px solid #818cf8;
+            padding-bottom: 4px;
+        }
+
+        .col-card ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .col-card li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .col-card li i {
+            width: 24px;
+            color: #818cf8;
+        }
+
+        @media (max-width: 900px) {
+            .three-col { grid-template-columns: 1fr; }
+        }
+
+        .stats {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border-radius: 48px;
+            padding: 48px;
+            margin: 60px 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            text-align: center;
+            border: 1px solid rgba(129,140,248,0.2);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 800px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .stats { grid-template-columns: 1fr; }
+        }
+
+        .integration-show {
+            background: rgba(129, 140, 248, 0.05);
+            border-radius: 48px;
+            padding: 48px;
+            text-align: center;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            margin: 60px 0;
+            transition: all 0.3s;
+        }
+
+        .integration-show:hover {
+            border-color: #818cf8;
+            box-shadow: 0 0 40px rgba(129,140,248,0.1);
+        }
+
+        .integration-show h3 {
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .integration-chain {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 32px;
+            margin: 32px 0;
+        }
+
+        .integration-chain span {
+            background: #1e1b4b;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .integration-chain span:hover {
+            background: #818cf8;
+            transform: scale(1.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #c084fc);
+            border: none;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px -10px rgba(129,140,248,0.5);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px -8px rgba(129,140,248,0.7);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 1300px;
+            background: linear-gradient(145deg, #11131f, #0c0e18);
+            border-radius: 48px;
+            padding: 24px;
+            border: 1px solid rgba(129,140,248,0.3);
+            transform: scale(0.9);
+            transition: all 0.4s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(129,140,248,0.2);
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .close-modal {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .gallery-swiper {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .gallery-slide {
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #1e1b4b;
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-slide:hover img {
+            transform: scale(1.05);
+        }
+
+        .slide-caption {
+            padding: 16px;
+            text-align: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            font-weight: 500;
+        }
+
+        .swiper-button-prev, .swiper-button-next {
+            color: #818cf8;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(129, 140, 248, 0.2);
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="hero-badge" data-aos="fade-down">
+            <i class="fas fa-microchip"></i>
+            <span>AI Model Trainer</span>
+            <i class="fas fa-mobile-alt"></i>
+            <i class="fas fa-laptop-code"></i>
+            <i class="fas fa-desktop"></i>
+        </div>
+        <div class="hero-icon" data-aos="zoom-in" data-aos-delay="100">
+            <img src="favicon.png" alt="AI Model Trainer Logo">
+        </div>
+        <h1 data-aos="fade-up" data-aos-delay="200">AI Model Trainer</h1>
+        <p data-aos="fade-up" data-aos-delay="300">منصة تدريب نماذج الذكاء الاصطناعي متعددة الأجهزة</p>
+    </div>
+</div>
+
+<div class="pipeline">
+    <div class="pipeline-title" data-aos="fade-up">
+        <span>🔄</span> رحلة النموذج من الفكرة إلى التطبيق
+    </div>
+
+    <div class="flow" data-aos="fade-up">
+        <div class="flow-node">
+            <div class="flow-icon">📤</div>
+            <h3>رفع البيانات</h3>
+            <p>صور · فيديوهات · مجموعات بيانات</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="flow-node">
+            <div class="flow-icon">🏷️</div>
+            <h3>وسم البيانات</h3>
+            <p>يدويًا أو تلقائيًا بـ YOLO</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="flow-node">
+            <div class="flow-icon">🏋️</div>
+            <h3>تدريب النموذج</h3>
+            <p>ضغطة زر · عرض مباشر للتقدم</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="flow-node">
+            <div class="flow-icon">🧪</div>
+            <h3>اختبار النموذج</h3>
+            <p>صور · فيديو · تحليل فوري</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="flow-node">
+            <div class="flow-icon">🚀</div>
+            <h3>نشر النموذج</h3>
+            <p>ويب · ديسكتوب · هاتف</p>
+        </div>
+    </div>
+
+    <div class="three-col">
+        <div class="col-card" data-aos="fade-up" data-aos-delay="0" onclick="openPlatformPage('platform-workflow')">
+            <div class="col-icon">🌐</div>
+            <h3>منصة الويب</h3>
+            <div class="role">القلب المركزي</div>
+            <ul>
+                <li><i class="fas fa-upload"></i> رفع الصور والفيديو</li>
+                <li><i class="fas fa-tag"></i> وسم يدوي وتلقائي</li>
+                <li><i class="fas fa-cloud-upload-alt"></i> تدريب النماذج السحابية</li>
+                <li><i class="fas fa-book"></i> مكتبة نماذج جاهزة</li>
+                <li><i class="fas fa-users"></i> مجتمع مطورين</li>
+            </ul>
+        </div>
+        <div class="col-card" data-aos="fade-up" data-aos-delay="100" onclick="openPlatformPage('vision-desk')">
+            <div class="col-icon">💻</div>
+            <h3>Vision Desk</h3>
+            <div class="role">تطبيق الديسكتوب</div>
+            <ul>
+                <li><i class="fas fa-plug"></i> تدريب بدون إنترنت</li>
+                <li><i class="fas fa-microchip"></i> GPU / CPU Acceleration</li>
+                <li><i class="fas fa-folder-open"></i> إدارة بيانات محلية</li>
+                <li><i class="fas fa-chart-line"></i> مراقبة التدريب بالرسوم</li>
+                <li><i class="fas fa-mobile-alt"></i> تصدير النماذج للهاتف</li>
+            </ul>
+        </div>
+        <div class="col-card" data-aos="fade-up" data-aos-delay="200" onclick="openPlatformPage('smart-eye')">
+            <div class="col-icon">📱</div>
+            <h3>Smart Eye</h3>
+            <div class="role">تطبيق الهاتف</div>
+            <ul>
+                <li><i class="fas fa-video"></i> تعرف مباشر عبر الكاميرا</li>
+                <li><i class="fas fa-camera"></i> تحليل الصور الملتقطة</li>
+                <li><i class="fas fa-sliders-h"></i> اختيار النموذج المناسب</li>
+                <li><i class="fas fa-wifi"></i> يعمل بدون إنترنت</li>
+                <li><i class="fas fa-globe"></i> سياحة · تعليم · زراعة · أمن</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="stats" data-aos="zoom-in">
+        <div>
+            <div class="stat-number">3</div>
+            <div class="stat-label">منصات متكاملة</div>
+        </div>
+        <div>
+            <div class="stat-number">&lt; 5 دقائق</div>
+            <div class="stat-label">لتدريب نموذج بسيط</div>
+        </div>
+        <div>
+            <div class="stat-number">100%</div>
+            <div class="stat-label">تدريب محلي بدون إنترنت</div>
+        </div>
+        <div>
+            <div class="stat-number">YOLO</div>
+            <div class="stat-label">أحدث تقنيات الرؤية الحاسوبية</div>
+        </div>
+    </div>
+
+    <div class="integration-show" data-aos="fade-up">
+        <h3>🔗 التكامل الكامل بين المنصات</h3>
+        <div class="integration-chain">
+            <span>🌐 منصة الويب</span>
+            <span>⬇️</span>
+            <span>💻 Vision Desk</span>
+            <span>⬇️</span>
+            <span>📱 Smart Eye</span>
+        </div>
+        <p style="color: #94a3b8; margin-top: 20px;">
+            درب نموذجك على الويب أو الديسكتوب → صدر النموذج → استخدمه فورًا على هاتفك<br>
+            بدون إنترنت · بدون تعقيد · واجهة واحدة بسيطة
+        </p>
+        <button class="btn-primary" onclick="openGallery()">
+            <i class="fas fa-images"></i> معرض المنصة الأصلية
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+
+    <div class="footer">
+        <p><strong>AI Model Trainer</strong> — منصة تدريب نماذج الذكاء الاصطناعي متعددة الأجهزة</p>
+        <p style="margin-top: 8px;">Web Platform · Vision Desk · Smart Eye — درب · اختبر · انشر على جميع أجهزتك</p>
+    </div>
+</div>
+
+<div id="galleryModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-images"></i> معرض المنصة الأصلية</h2>
+            <div class="close-modal" onclick="closeGallery()">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <div class="swiper gallery-swiper">
+            <div class="swiper-wrapper" id="galleryWrapper"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <div style="text-align: center; margin-top: 24px; color: #94a3b8; font-size: 14px;">
+            <i class="fas fa-mouse-pointer"></i> مرر للتنقل بين الصور | اضغط على الصورة للاطلاع على التفاصيل
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        disable: window.innerWidth < 768
+    });
+
+    // معرض الصور الحقيقي من مجلد platform-workflow-images
+    const galleryImages = [
+        { src: "platform-workflow-images/dashboard-main.jpg", title: "لوحة التحكم الرئيسية - إدارة المشاريع والنماذج", page: null },
+        { src: "platform-workflow-images/data-upload.jpg", title: "واجهة رفع البيانات - دعم الصور والفيديو والمجلدات", page: null },
+        { src: "platform-workflow-images/labeling-tool.jpg", title: "أداة وسم البيانات الذكية - Bounding Box, Polygon, Keypoints", page: null },
+        { src: "platform-workflow-images/training-dashboard.jpg", title: "واجهة التدريب - مراقبة الأداء في الوقت الفعلي", page: null },
+        { src: "platform-workflow-images/live-testing.jpg", title: "الاختبار المباشر - رفع صورة أو استخدام الكاميرا", page: null },
+        { src: "platform-workflow-images/models-library.jpg", title: "مكتبة النماذج الجاهزة - YOLO, ResNet, Custom Models", page: null },
+        { src: "vision-desk.html", title: "Vision Desk - تطبيق الديسكتوب للتدريب المحلي", page: "vision-desk.html", isHtml: true },
+        { src: "smart-eye.html", title: "Smart Eye - تطبيق الهاتف للتعرف الفوري", page: "smart-eye.html", isHtml: true },
+        { src: "platform-workflow-images/export-models.jpg", title: "تصدير النماذج - ONNX, TensorFlow, PyTorch", page: null }
+    ];
+
+    let swiperInstance = null;
+
+    function openGallery() {
+        const modal = document.getElementById('galleryModal');
+        const wrapper = document.getElementById('galleryWrapper');
+        
+        wrapper.innerHTML = galleryImages.map(img => {
+            if (img.isHtml) {
+                return `
+                    <div class="swiper-slide">
+                        <div class="gallery-slide" onclick="openPlatformPage('${img.page.replace('.html', '')}')">
+                            <div style="height: 350px; background: linear-gradient(135deg, #4f46e5, #c084fc); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px;">
+                                <i class="fas ${img.page === 'vision-desk.html' ? 'fa-laptop-code' : 'fa-mobile-alt'}" style="font-size: 80px; color: white;"></i>
+                                <p style="color: white; font-size: 18px; font-weight: bold;">${img.title}</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">اضغط للاطلاع ←</p>
+                            </div>
+                            <div class="slide-caption">
+                                <i class="fas fa-external-link-alt"></i> ${img.title}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            return `
+                <div class="swiper-slide">
+                    <div class="gallery-slide" onclick="window.open('${img.src}', '_blank')">
+                        <img src="${img.src}" alt="${img.title}" onerror="this.src='https://placehold.co/800x400/1e1b4b/818cf8?text=${encodeURIComponent(img.title)}'">
+                        <div class="slide-caption">
+                            <i class="fas fa-camera"></i> ${img.title}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        setTimeout(() => {
+            if (swiperInstance) swiperInstance.destroy();
+            swiperInstance = new Swiper('.gallery-swiper', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 1,
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 200,
+                    modifier: 1,
+                    slideShadows: true
+                },
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false
+                },
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    dynamicBullets: true
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
+                },
+                breakpoints: {
+                    640: { slidesPerView: 1.5 },
+                    1024: { slidesPerView: 2.5 }
+                }
+            });
+        }, 100);
+    }
+
+    function closeGallery() {
+        const modal = document.getElementById('galleryModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (swiperInstance) {
+            swiperInstance.destroy();
+            swiperInstance = null;
+        }
+    }
+
+    function openPlatformPage(page) {
+        closeGallery();
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4f46e5, #c084fc);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            z-index: 10000;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+            direction: rtl;
+        `;
+        
+        let message = '';
+        if (page === 'web') message = '🚀 جاري توجيهك إلى منصة الويب... (نسخة تجريبية)';
+        else if (page === 'vision-desk') message = '💻 جاري تحميل تطبيق Vision Desk... (نسخة تجريبية)';
+        else if (page === 'smart-eye') message = '📱 جاري تحميل تطبيق Smart Eye... (نسخة تجريبية)';
+        
+        toast.innerHTML = `<i class="fas fa-info-circle ml-2"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+        
+        setTimeout(() => {
+            window.open(`${page}.html`, '_blank');
+        }, 500);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeGallery();
+    });
+
+    document.querySelectorAll('.flow-node, .col-card').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (!e.target.closest('.col-card')?.getAttribute('onclick')) {
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #4f46e5, #c084fc);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 50px;
+                    z-index: 10000;
+                    font-weight: 500;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    animation: slideIn 0.3s ease;
+                `;
+                toast.innerHTML = '<i class="fas fa-info-circle ml-2"></i> هذه نسخة تجريبية — المنصة الحقيقية تنتظرك!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2500);
+            }
+        });
+    });
+</script>
+</body>
+</html>
